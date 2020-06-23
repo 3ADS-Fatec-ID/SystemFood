@@ -1,19 +1,19 @@
 package Pi;
 
-import java.awt.EventQueue;
-
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
-import javax.swing.JTextField;
-import javax.swing.JPasswordField;
-import javax.swing.JLabel;
-import javax.swing.JButton;
-import java.awt.Font;
 import java.awt.Color;
-import java.awt.event.ActionListener;
+import java.awt.EventQueue;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
-import javax.swing.ImageIcon;
+import java.awt.event.ActionListener;
+import java.sql.SQLException;
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JPasswordField;
+import javax.swing.JTextField;
+import javax.swing.border.EmptyBorder;
 
 public class Login extends JFrame {
 
@@ -75,19 +75,43 @@ public class Login extends JFrame {
 		botao_login.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
-				String c = usuario.getText();
-				if(c.equals("Admin"))
-					{
-						admin=true;
-					}
-					else if(c.equals("User"))
-					{
-						admin=false;
+				String user = usuario.getText();
+				String senha = new String(usuario_senha.getPassword());
+				
+				BD bd = new BD();
+				bd.getConnection();
+				String sql = "SELECT email, senha, permissao FROM systemfood.usuarios "
+						+ "WHERE email = '" + user + "' AND senha = " + senha + ";";
+				
+				System.out.println(sql);
+				try {
+					bd.st = bd.con.prepareStatement(sql); //preparei a query para a execução
+					bd.rs = bd.st.executeQuery(sql);
+					bd.rs.next();
+					
+					if(bd.rs.getString("permissao").contentEquals("admin")) {
+						admin = true;
+					} else {
+						admin = false;
 					}
 					
 					Login.this.setVisible(false);
 					Menu m = new Menu();
 					m.setVisible(true);
+				} catch( SQLException error ) {
+					System.out.println("ERRO => " + error);
+				}
+				
+				
+//				if(c.equals("Admin")) {
+//					admin=true;
+//				} else if(c.equals("User")) {
+//					admin=false;
+//				}
+					
+//					Login.this.setVisible(false);
+//					Menu m = new Menu();
+//					m.setVisible(true);
 					
 					
 					

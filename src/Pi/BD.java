@@ -49,7 +49,7 @@ public class BD {
 			if(st != null) st.close();
 			if(con != null) {
 				con.close();
-				System.out.println("Desconectado!");
+				System.out.println("Desconectado Nessa porrra!");
 			}
 		} catch (SQLException e) {
 			

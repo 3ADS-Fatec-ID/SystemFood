@@ -16,11 +16,11 @@ package Pi;
 			try {
 				Vector<String> cabecalho = new Vector<String>();
 				Vector<Vector<String>> linhas = new Vector<Vector<String>>();
-				bd.instrucaoParametrizada = bd.conexao.prepareStatement(sql);
-				bd.manipularConsulta = bd.instrucaoParametrizada.executeQuery();
-				bd.manipularConsulta.next();
+				bd.instrucaoParametrizada = bd.con.prepareStatement(sql);
+				bd.rs = bd.instrucaoParametrizada.executeQuery();
+				bd.rs.next();
 				// busca os cabecalhos 
-				ResultSetMetaData rsmd = bd.manipularConsulta.getMetaData();
+				ResultSetMetaData rsmd = bd.rs.getMetaData();
 				for ( int i = 1; i <= rsmd.getColumnCount(); i++ ) 
 					cabecalho.addElement( rsmd.getColumnName( i ) );
 		
@@ -31,27 +31,27 @@ package Pi;
 					for ( int i = 1; i <= rsmd.getColumnCount(); i++ ){
 						switch( rsmd.getColumnType(i)) {
 						case Types.VARCHAR:
-							linhaAtual.addElement(bd.manipularConsulta.getString(i));break;
+							linhaAtual.addElement(bd.rs.getString(i));break;
 						case Types.CHAR:
-							linhaAtual.addElement(bd.manipularConsulta.getString(i));break;
+							linhaAtual.addElement(bd.rs.getString(i));break;
 						case Types.TIMESTAMP:
-							linhaAtual.addElement(""+bd.manipularConsulta.getDate(i));break;
+							linhaAtual.addElement(""+bd.rs.getDate(i));break;
 						case Types.DOUBLE:
-							linhaAtual.addElement(""+bd.manipularConsulta.getDouble(i));break;
+							linhaAtual.addElement(""+bd.rs.getDouble(i));break;
 						case Types.INTEGER:
-							linhaAtual.addElement(""+bd.manipularConsulta.getInt(i));break;
+							linhaAtual.addElement(""+bd.rs.getInt(i));break;
 						case Types.NUMERIC:
-							linhaAtual.addElement(""+df.format(bd.manipularConsulta.getDouble(i)));break;
+							linhaAtual.addElement(""+df.format(bd.rs.getDouble(i)));break;
 						case Types.SMALLINT:
-							linhaAtual.addElement(""+bd.manipularConsulta.getInt(i));break;
+							linhaAtual.addElement(""+bd.rs.getInt(i));break;
 						case Types.DECIMAL:
-							linhaAtual.addElement(""+bd.manipularConsulta.getDouble(i));break;
+							linhaAtual.addElement(""+bd.rs.getDouble(i));break;
 		//					default:System.out.println(rsmd.getColumnType(i));   
 						}
 					}
 					linhas.addElement(linhaAtual);     
 				} 
-				while (bd.manipularConsulta.next());       
+				while (bd.rs.next());       
 
 				tableModel = new DefaultTableModel(linhas,cabecalho);
 			}
