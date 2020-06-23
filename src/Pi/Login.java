@@ -86,7 +86,7 @@ public class Login extends JFrame {
 				System.out.println(sql);
 				try {
 					bd.st = bd.con.prepareStatement(sql); //preparei a query para a execução
-					bd.rs = bd.st.executeQuery(sql);
+					bd.rs = bd.st.executeQuery();
 					bd.rs.next();
 					
 					if(bd.rs.getString("permissao").contentEquals("admin")) {

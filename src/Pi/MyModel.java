@@ -16,8 +16,8 @@ package Pi;
 			try {
 				Vector<String> cabecalho = new Vector<String>();
 				Vector<Vector<String>> linhas = new Vector<Vector<String>>();
-				bd.instrucaoParametrizada = bd.con.prepareStatement(sql);
-				bd.rs = bd.instrucaoParametrizada.executeQuery();
+				bd.st = bd.con.prepareStatement(sql);
+				bd.rs = bd.st.executeQuery();
 				bd.rs.next();
 				// busca os cabecalhos 
 				ResultSetMetaData rsmd = bd.rs.getMetaData();
