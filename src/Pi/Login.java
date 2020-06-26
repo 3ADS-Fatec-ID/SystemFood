@@ -23,6 +23,7 @@ public class Login extends JFrame {
 	private JButton botao_login;
 	public static boolean admin;
 	private JLabel planoFundo;
+	public static BD bd;
 	
 
 	/**
@@ -78,7 +79,7 @@ public class Login extends JFrame {
 				String user = usuario.getText();
 				String senha = new String(usuario_senha.getPassword());
 				
-				BD bd = new BD();
+				bd = new BD();
 				bd.getConnection();
 				String sql = "SELECT email, senha, permissao FROM systemfood.usuarios "
 						+ "WHERE email = '" + user + "' AND senha = " + senha + ";";
