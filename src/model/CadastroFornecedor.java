@@ -112,7 +112,6 @@ public class CadastroFornecedor extends JPanel {
 		btnSalvar.setBounds(340, 133, 89, 23);
 		add(btnSalvar);
 		btnSalvar.addActionListener(new ActionListener() {
-			@SuppressWarnings("null")
 			public void actionPerformed(ActionEvent e) {
 
 				bd = new BD();

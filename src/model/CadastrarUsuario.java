@@ -58,7 +58,6 @@ public class CadastrarUsuario extends JPanel {
 		add(btnSalvar);
 		
 		btnSalvar.addActionListener(new ActionListener() {
-			@SuppressWarnings("null")
 			public void actionPerformed(ActionEvent e) {
 				String nameUser = nomeUsuario.getText();
 				String passUser = senhaUsuario.getText();

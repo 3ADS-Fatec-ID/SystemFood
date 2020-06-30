@@ -99,7 +99,6 @@ public class CadastroProduto extends JPanel {
 		btnSalvar.setBounds(188, 193, 92, 23);
 		add(btnSalvar);
 		btnSalvar.addActionListener(new ActionListener() {
-			@SuppressWarnings("null")
 			public void actionPerformed(ActionEvent e) {
 
 				bd = new BD();

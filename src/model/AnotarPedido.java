@@ -20,18 +20,22 @@ import javax.swing.ListSelectionModel;
 import services.BD;
 
 public class AnotarPedido extends JPanel {
-	private JTextField textField;
-	private JTextField textField_1;
-	private JTextField textField_2;
-	private JTextField textField_3;
+	private JTextField tfnomeCliente;
+	private JTextField tfBairro;
+	private JTextField tfRua;
+	private JTextField tfComp;
 	public static BD bd;
+	public String[] lanches;
 	
 	/**
 	 * Create the panel.
 	 */
 	public AnotarPedido() {
+		bd = new BD();
+		bd.getConnection();
 		setLayout(null);
-		String[] lanches = new String[] {"Coca-Cola","Fanta Laranja","Fanta Uva","Sprite","Itubaina"};
+		String[] lanches = new String[] {"", "", "", ""};
+		String[] bebidas = new String[] {"", "", "", "", ""};
 		
 		int i = 0;
 		String sql = "SELECT * FROM comidas;";
@@ -40,8 +44,24 @@ public class AnotarPedido extends JPanel {
 			bd.rs = bd.st.executeQuery();
 			while(bd.rs.next()) {
 			 lanches[i] = bd.rs.getString("nomeComida");
-			 System.out.println(lanches[i]);
 			 i++;
+			}
+			i = 0; 
+		} catch (SQLException erro) {
+     	   System.out.println("ERRO => " + erro);
+     	   JOptionPane.showMessageDialog(null, "Erro ao alterar.\nInsira dados validos!", "ERRO", JOptionPane.ERROR_MESSAGE);
+        }  catch ( NullPointerException erro ) {
+				System.out.println("ERRO => " + erro.getCause().toString());
+        }
+		
+		String sqlBebidas = "SELECT * FROM produtos WHERE tipoProduto = 2;";
+		
+		try {
+			bd.st = bd.con.prepareStatement(sqlBebidas); //preparei a query para a execução
+			bd.rs = bd.st.executeQuery();
+			while(bd.rs.next()) {
+				bebidas[i] = bd.rs.getString("descricao");
+				i++;
 			}
 			
 		} catch (SQLException erro) {
@@ -51,7 +71,8 @@ public class AnotarPedido extends JPanel {
 				System.out.println("ERRO => " + erro.getCause().toString());
         }
 		
-		String[] bebidas = new String[] {"Coca-Cola","Fanta Laranja","Fanta Uva","Sprite","Itubaina"};
+		
+//		String[] bebidas = new String[] {"Coca-Cola","Fanta Laranja","Fanta Uva","Sprite","Itubaina"};
 		DefaultListModel<Object> model_list = new DefaultListModel<Object>();
 	    DefaultListModel<Object> model_list_1 = new DefaultListModel<Object>();
 	    DefaultListModel<Object> model_list_2 = new DefaultListModel<Object>();
@@ -226,59 +247,61 @@ public class AnotarPedido extends JPanel {
 		JButton btnNewButton = new JButton("Salvar");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
+				bd = new BD();
+				System.out.println(model_list_1);
+				System.out.println(model_list_3);
 			}
 		});
 		btnNewButton.setBounds(601, 244, 88, 33);
 		add(btnNewButton);
 		
-		textField = new JTextField();
-		textField.setBounds(55, 14, 109, 20);
-		add(textField);
-		textField.setColumns(10);
-		
 		JLabel lblNewLabel_2 = new JLabel("Cliente:");
 		lblNewLabel_2.setBounds(10, 17, 46, 14);
 		add(lblNewLabel_2);
+		
+		tfnomeCliente = new JTextField();
+		tfnomeCliente.setBounds(55, 14, 109, 20);
+		add(tfnomeCliente);
+		tfnomeCliente.setColumns(10);
 		
 		JComboBox comboBox = new JComboBox();
 		comboBox.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if(comboBox.getSelectedItem()=="Presencial")
 				{
-					textField_1.setEnabled(false);
-					textField_1.setText("");
-					textField_2.setEnabled(false);
-					textField_2.setText("");
-					textField_3.setEnabled(false);
-					textField_3.setText("");
+					tfBairro.setEnabled(false);
+					tfBairro.setText("");
+					tfRua.setEnabled(false);
+					tfRua.setText("");
+					tfComp.setEnabled(false);
+					tfComp.setText("");
 				}
-				else {textField_1.setEnabled(true);
-				      textField_2.setEnabled(true);
-				      textField_3.setEnabled(true);}
+				else {tfBairro.setEnabled(true);
+				      tfRua.setEnabled(true);
+				      tfComp.setEnabled(true);}
 			}
 		});
 		comboBox.setModel(new DefaultComboBoxModel(new String[] {"Presencial", "Entrega"}));
 		comboBox.setBounds(174, 14, 88, 20);
 		add(comboBox);
 		
-		textField_1 = new JTextField();
-		textField_1.setEnabled(false);
-		textField_1.setBounds(312, 14, 86, 20);
-		add(textField_1);
-		textField_1.setColumns(10);
+		tfBairro = new JTextField();
+		tfBairro.setEnabled(false);
+		tfBairro.setBounds(312, 14, 86, 20);
+		add(tfBairro);
+		tfBairro.setColumns(10);
 		
-		textField_2 = new JTextField();
-		textField_2.setEnabled(false);
-		textField_2.setBounds(445, 14, 128, 20);
-		add(textField_2);
-		textField_2.setColumns(10);
+		tfRua = new JTextField();
+		tfRua.setEnabled(false);
+		tfRua.setBounds(445, 14, 128, 20);
+		add(tfRua);
+		tfRua.setColumns(10);
 		
-		textField_3 = new JTextField();
-		textField_3.setEnabled(false);
-		textField_3.setBounds(660, 14, 59, 20);
-		add(textField_3);
-		textField_3.setColumns(10);
+		tfComp = new JTextField();
+		tfComp.setEnabled(false);
+		tfComp.setBounds(660, 14, 59, 20);
+		add(tfComp);
+		tfComp.setColumns(10);
 		
 		JLabel lblNewLabel_3 = new JLabel("Bairro:");
 		lblNewLabel_3.setFont(new Font("Tahoma", Font.PLAIN, 10));

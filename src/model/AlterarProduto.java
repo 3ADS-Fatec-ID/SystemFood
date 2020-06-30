@@ -46,6 +46,7 @@ public class AlterarProduto extends JPanel {
 			tipoProd = bd.rs.getInt("tipoProduto");
 			estoqueMin = bd.rs.getInt("estoqueMinimo");
 			idFornecedor = bd.rs.getInt("idFornecedor");
+			bd.close();
 		} catch( SQLException error ) {
 			System.out.println("ERRO => " + error);
 		}
@@ -176,6 +177,8 @@ public class AlterarProduto extends JPanel {
 		JButton btnSalvar = new JButton("Salvar");
 		btnSalvar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+//				bd = new BD();
+//				bd.getConnection();
 				int idProd = idProduto;
 				descricaobd = descricao.getText();
 				valorVenda = valorV.getText();
@@ -200,16 +203,17 @@ public class AlterarProduto extends JPanel {
 				String sqlTest = "UPDATE produtos SET descricao = '"+descricaobd+"', valorVenda = '"+valorVenda+"', valorCompra = '"+valorCompra+"',"
 						+ " tipoProduto = '"+tipoProd+"', tipoProdutoStr = '"+tipoProdStr+"', quantidade = '"+quant+"',"
 						+ " estoqueMinimo = '"+estoqueMin+"', idFornecedor = '"+idFornecedor+"'"
-						+ " WHERE idProduto = '"+idProduto+"';";
+						+ " WHERE idProduto = '"+idProd+"';";
 				System.out.println(sqlTest);
 				
 				String sql = "UPDATE produtos SET descricao = ?, valorVenda = ?, valorCompra = ?, tipoProduto = ?"
-						+ " tipoProdutoStr = ?, quantidade = ?, estoqueMinimo = ?, idFornecedor = ? "
+						+ ", tipoProdutoStr = ?, quantidade = ?, estoqueMinimo = ?, idFornecedor = ? "
 						+ " WHERE idProduto = ?";
 				
 				
 				System.out.println(sql);
 				bd = new BD();
+				bd.getConnection();
 				try {
 				
 					bd.st = bd.con.prepareStatement(sql); //preparei a query para a execução
@@ -219,8 +223,8 @@ public class AlterarProduto extends JPanel {
 					bd.st.setInt(4, tipoProd);
 					bd.st.setString(5, tipoProdStr);
 					bd.st.setInt(6, quant);
-					bd.st.setInt(8,  estoqueMin);
-					bd.st.setInt(7, idFornecedor);
+					bd.st.setInt(7,  estoqueMin);
+					bd.st.setInt(8, idFornecedor);
 					bd.st.setInt(9, idProduto);
 					System.out.println(sql);
 					bd.st.executeUpdate();

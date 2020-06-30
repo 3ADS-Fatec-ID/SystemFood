@@ -117,7 +117,7 @@ public class UsuarioDAO extends JPanel {
 						bd.st.setString(2, passUser);
 						bd.st.setString(3, permission);
 						bd.st.setInt(4, idUsuario);
-						bd.st.executeUpdate(sql);
+						bd.st.executeUpdate();
 						nomeUsuario.setText("");
 						senhaUsuario.setText("");
 						JOptionPane.showMessageDialog(null, "Usuário alterado com sucesso");

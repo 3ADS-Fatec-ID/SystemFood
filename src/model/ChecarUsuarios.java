@@ -23,13 +23,15 @@ public class ChecarUsuarios extends JPanel {
 	private DefaultTableModel model;
 	public int idUsuario;
 	public static BD bd;
+	public String userId;
 
 	/**
 	 * Create the panel.
 	 */
 	public ChecarUsuarios() {
 		setLayout(null);
-		
+		BD bd = new BD();
+		bd.getConnection();
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setBounds(30, 28, 292, 243);
 		add(scrollPane);
@@ -46,10 +48,11 @@ public class ChecarUsuarios extends JPanel {
 		
 		tbUsuarios.addMouseListener(new MouseListener() {
             public void mouseClicked(MouseEvent e) {
-            	String userObjStr = tbUsuarios.getValueAt(tbUsuarios.getSelectedRow(), 0).toString();
-            	int userObj = Integer.parseInt(userObjStr);
+            	userId = tbUsuarios.getValueAt(tbUsuarios.getSelectedRow(), 0).toString();
+            	int userObj = Integer.parseInt(userId);
         		System.out.println("USEROBJ => "+userObj);
         		idUsuario = userObj;
+        		bd.close();
             }
 
             public void mousePressed(MouseEvent e) {
@@ -77,13 +80,19 @@ public class ChecarUsuarios extends JPanel {
 		add(alterar);
 		
 		JButton btnExcluir = new JButton("Excluir");
+		btnExcluir.setForeground(Color.BLACK);
+		btnExcluir.setBackground(new Color(178, 34, 34));
+		btnExcluir.setBounds(356, 94, 89, 23);
+		add(btnExcluir);
 		btnExcluir.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if(tbUsuarios.getSelectedRow() != -1) {
 		               // remove selected row from the model
-//		               System.out.println(model.getValueAt(table.getSelectedRow(), 0));
+		               System.out.println(model.getValueAt(tbUsuarios.getSelectedRow(), 0));
 		               
 					String sql = "DELETE FROM usuarios WHERE idUsuario = ?";
+					BD bd = new BD();
+					bd.getConnection();
 		               try {
 		            	   String userStr = Integer.toString(idUsuario);
 			               System.out.println(sql);
@@ -103,10 +112,7 @@ public class ChecarUsuarios extends JPanel {
 				}
 			}
 		});
-		btnExcluir.setForeground(Color.BLACK);
-		btnExcluir.setBackground(new Color(178, 34, 34));
-		btnExcluir.setBounds(356, 94, 89, 23);
-		add(btnExcluir);
+		
 		
 		JLabel planoFundo = new JLabel("");
 		planoFundo.setBounds(0, 0, 481, 289);
