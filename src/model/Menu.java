@@ -25,7 +25,7 @@ public class Menu extends JFrame {
 
 	private static JPanel contentPane;
 	private boolean adm= true;
-	public static BD bd;
+	private static BD bd;
 	
 
 	/**

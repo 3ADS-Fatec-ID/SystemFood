@@ -22,7 +22,7 @@ public class ChecarFornecedores extends JPanel {
 	public JButton alterar;
 	public String idFornecedorStr;
 	public int idFornecedor;
-	public BD bd;
+	private BD bd;
 	/**
 	 * Create the panel.
 	 */
@@ -36,7 +36,7 @@ public class ChecarFornecedores extends JPanel {
 		
 //		Object[][] data = new Object[][] {{"101", "Ramesh"}, {"102", "Adithya"}, {"103", "Jai"}, {"104", "Sai"}};
 //	     String[] columnNames = new String[] {"ID", "Nome","CNPJ","email","telefone","endereco"};
-	    model = MyModel.getModel(Login.bd, "SELECT * FROM fornecedores;");
+	    model = MyModel.getModel(Login.bd, "SELECT nomeFornecedor, cnpj, telefone FROM fornecedores;");
 		tbFornecedores = new JTable(model);
 		
 		tbFornecedores.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);

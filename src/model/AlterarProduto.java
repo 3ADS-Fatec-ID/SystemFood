@@ -24,7 +24,7 @@ public class AlterarProduto extends JPanel {
 	private JTextField estoqueM;
 	private String descricaobd, valorVenda, valorCompra, tipoProdStr;
 	private int quant, tipoProd, estoqueMin, idFornecedor, idProduto;
-	public BD bd;
+	private BD bd;
 
 	/**
 	 * Create the panel.

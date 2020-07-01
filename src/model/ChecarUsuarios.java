@@ -22,7 +22,7 @@ public class ChecarUsuarios extends JPanel {
 	private JTable tbUsuarios;
 	private DefaultTableModel model;
 	public int idUsuario;
-	public static BD bd;
+	private static BD bd;
 	public String userId;
 
 	/**

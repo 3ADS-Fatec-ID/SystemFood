@@ -25,7 +25,7 @@ public class CadastroFornecedor extends JPanel {
 	private JTextField bairro;
 	private JTextField endereco;
 	private JTextField cep;
-	public BD bd;
+	private BD bd;
 
 	/**
 	 * Create the panel.

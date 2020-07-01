@@ -8,7 +8,7 @@ import services.BD;
 
 public class PedidoDAO {
 	
-	public BD bd;
+	private BD bd;
 	public String sql;
 	
 	public PedidoDAO() {

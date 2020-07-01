@@ -18,7 +18,7 @@ import services.Criptografia;
 public class CadastrarUsuario extends JPanel {
 	private JTextField nomeUsuario;
 	private JTextField senhaUsuario;
-	public static BD bd;
+	private static BD bd;
 
 	/**
 	 * Create the panel.

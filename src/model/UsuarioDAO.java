@@ -21,7 +21,7 @@ public class UsuarioDAO extends JPanel {
 
 	private JTextField nomeUsuario;
 	private JTextField senhaUsuario;
-	public static BD bd;
+	private static BD bd;
 	public int idUsuario;
 	private String email;
 	private String senha;

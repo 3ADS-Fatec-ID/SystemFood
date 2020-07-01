@@ -22,7 +22,7 @@ public class CadastroProduto extends JPanel {
 	private JTextField valorV;
 	private JTextField quantidade;
 	private JTextField estoqueM;
-	public BD bd;
+	private BD bd;
 
 	/**
 	 * Create the panel.

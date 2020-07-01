@@ -1,24 +1,21 @@
 package model;
 
-import javax.swing.JPanel;
-import javax.swing.JSplitPane;
+import java.awt.Color;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.sql.SQLException;
+
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
 import services.BD;
-
-import javax.swing.JLabel;
-import javax.swing.JComboBox;
-import javax.swing.JFrame;
-
-import java.awt.BorderLayout;
-import java.awt.Color;
-import javax.swing.DefaultComboBoxModel;
-import java.awt.event.ActionListener;
-import java.sql.SQLException;
-import java.awt.event.ActionEvent;
-import javax.swing.ImageIcon;
 
 public class AlterarFornecedor extends JPanel {
 	private JTextField nomeFornecedor;
@@ -28,8 +25,8 @@ public class AlterarFornecedor extends JPanel {
 	private JTextField bairro;
 	private JTextField rua;
 	private JTextField cep;
-	private String nomeFornecedorBd, emailBd, cnpjBd, telefoneBd, bairroBd, ruaBd, cepBd;
-	public BD bd;
+	private String nomeFornecedorBd, emailBd, cnpjBd, telefoneBd, cidadeBd, bairroBd, ruaBd, cepBd;
+	private BD bd;
 	/**
 	 * Create the panel.
 	 */
@@ -39,13 +36,14 @@ public class AlterarFornecedor extends JPanel {
 		String sql = "SELECT * FROM fornecedores WHERE idFornecedor = " + idFornecedor;
 		
 		try {
-			bd.st = bd.con.prepareStatement(sql); //preparei a query para a execu��o
+			bd.st = bd.con.prepareStatement(sql); //preparei a query para a execuï¿½ï¿½o
 			bd.rs = bd.st.executeQuery();
 			bd.rs.next();
 			nomeFornecedorBd =  bd.rs.getString("nomeFornecedor");
 			emailBd = bd.rs.getString("email");
-			cnpjBd =  bd.rs.getString("telefone");
+			cnpjBd =  bd.rs.getString("cnpj");
 			telefoneBd =  bd.rs.getString("telefone");
+			cidadeBd = bd.rs.getString("cidade");
 			bairroBd = bd.rs.getString("bairro");
 			ruaBd = bd.rs.getString("endereco");
 			cepBd = bd.rs.getString("cep");
@@ -106,10 +104,10 @@ public class AlterarFornecedor extends JPanel {
 		lblNewLabel_5.setBounds(144, 147, 42, 14);
 		add(lblNewLabel_5);
 		
-		JComboBox comboBox = new JComboBox();
-		comboBox.setModel(new DefaultComboBoxModel(new String[] {"Indaiatuba", "Campinas"}));
-		comboBox.setBounds(193, 143, 112, 22);
-		add(comboBox);
+		JComboBox cbCidade = new JComboBox();
+		cbCidade.setModel(new DefaultComboBoxModel(new String[] {"Indaiatuba", "Campinas"}));
+		cbCidade.setBounds(193, 143, 112, 22);
+		add(cbCidade);
 		
 		bairro = new JTextField();
 		bairro.setText(bairroBd);
@@ -141,10 +139,62 @@ public class AlterarFornecedor extends JPanel {
 		cep.setBounds(193, 236, 112, 20);
 		add(cep);
 		
-		JButton btnNewButton = new JButton("Salvar");
-		btnNewButton.setBackground(new Color(0, 128, 0));
-		btnNewButton.setBounds(325, 128, 89, 23);
-		add(btnNewButton);
+		JButton btnSalvar = new JButton("Salvar");
+		btnSalvar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				int idForn = idFornecedor;
+				nomeFornecedorBd = nomeFornecedor.getText();
+				emailBd = email.getText();
+				cnpjBd = cnpj.getText();
+				telefoneBd = telefone.getText();
+				cidadeBd = (String) cbCidade.getSelectedItem();
+				bairroBd = bairro.getText();
+				ruaBd = rua.getText();
+				cepBd = cep.getText();
+				
+				String sql = "UPDATE fornecedores SET nomeFornecedor = ?, cnpj = ?, endereco = ?, cidade = ?"
+						+ ", bairro = ?, telefone = ?, email = ? , cep = ? "
+						+ " WHERE idFornecedor = ?";
+				
+				System.out.println(sql);
+				bd = new BD();
+				bd.getConnection();
+				try {
+					
+					bd.st = bd.con.prepareStatement(sql); //preparei a query para a execu��o
+					bd.st.setString(1, nomeFornecedorBd);
+					bd.st.setString(2, cnpjBd);
+					bd.st.setString(3, ruaBd);
+					bd.st.setString(4, cidadeBd);
+					bd.st.setString(5, bairroBd);
+					bd.st.setString(6, telefoneBd);
+					bd.st.setString(7, emailBd);
+					bd.st.setString(8, cepBd);
+					bd.st.setInt(9, idFornecedor);
+					
+					System.out.println(sql);
+					bd.st.executeUpdate();
+//					descricao.setText("");
+					nomeFornecedor.setText("");
+					email.setText("");
+					cnpj.setText("");
+					telefone.setText("");
+					//cbCidade.getSelectedItem();
+					bairro.setText("");
+					rua.setText("");
+					cep.setText("");
+					
+					JOptionPane.showMessageDialog(null, "Produto alterado com sucesso");
+				} catch( SQLException error ) {
+					System.out.println("ERRO => " + error);
+					JOptionPane.showMessageDialog(null, "Erro ao alterar.\nInsira dados validos!", "ERRO", JOptionPane.ERROR_MESSAGE);
+				}
+			}
+		});
+		btnSalvar.setBackground(new Color(0, 128, 0));
+		btnSalvar.setBounds(325, 128, 89, 23);
+		add(btnSalvar);
 		
 		JButton btnNewButton_1 = new JButton("");
 		btnNewButton_1.addActionListener(new ActionListener() {
