@@ -1,2 +1,4 @@
 eclipse.preferences.version=1
 encoding//src/model/AlterarFornecedor.java=UTF-8
+encoding//src/model/AlterarPedido.java=UTF-8
+encoding//src/model/ChecarPedido.java=UTF-8

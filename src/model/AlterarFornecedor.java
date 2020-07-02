@@ -63,80 +63,80 @@ public class AlterarFornecedor extends JPanel {
 		nomeFornecedor = new JTextField();
 		nomeFornecedor.setText(nomeFornecedorBd);
 		nomeFornecedor.setColumns(10);
-		nomeFornecedor.setBounds(193, 23, 112, 20);
+		nomeFornecedor.setBounds(110, 23, 214, 20);
 		add(nomeFornecedor);
 		
 		email = new JTextField();
 		email.setText(emailBd);
 		email.setColumns(10);
-		email.setBounds(193, 54, 112, 20);
+		email.setBounds(110, 54, 214, 20);
 		add(email);
 		
 		JLabel lblNewLabel_1 = new JLabel("Nome:");
-		lblNewLabel_1.setBounds(150, 26, 43, 14);
+		lblNewLabel_1.setBounds(57, 23, 43, 14);
 		add(lblNewLabel_1);
 		
 		JLabel lblNewLabel_2 = new JLabel("E-mail:");
-		lblNewLabel_2.setBounds(148, 57, 46, 14);
+		lblNewLabel_2.setBounds(55, 54, 46, 14);
 		add(lblNewLabel_2);
 	
 		cnpj = new JTextField();
 		cnpj.setText(cnpjBd);
 		cnpj.setColumns(10);
-		cnpj.setBounds(193, 82, 112, 20);
+		cnpj.setBounds(110, 82, 214, 20);
 		add(cnpj);
 		
 		JLabel lblNewLabel_3 = new JLabel("CNPJ:");
-		lblNewLabel_3.setBounds(152, 85, 36, 14);
+		lblNewLabel_3.setBounds(59, 82, 36, 14);
 		add(lblNewLabel_3);
 		
 		JLabel lblNewLabel_4 = new JLabel("Telefone:");
-		lblNewLabel_4.setBounds(134, 116, 55, 14);
+		lblNewLabel_4.setBounds(41, 113, 55, 14);
 		add(lblNewLabel_4);
 		
 		telefone = new JTextField();
 		telefone.setText(telefoneBd);
 		telefone.setColumns(10);
-		telefone.setBounds(193, 113, 112, 20);
+		telefone.setBounds(110, 113, 214, 20);
 		add(telefone);
 		
 		JLabel lblNewLabel_5 = new JLabel("Cidade:");
-		lblNewLabel_5.setBounds(144, 147, 42, 14);
+		lblNewLabel_5.setBounds(51, 144, 42, 14);
 		add(lblNewLabel_5);
 		
 		JComboBox cbCidade = new JComboBox();
 		cbCidade.setModel(new DefaultComboBoxModel(new String[] {"Indaiatuba", "Campinas"}));
-		cbCidade.setBounds(193, 143, 112, 22);
+		cbCidade.setBounds(110, 143, 214, 22);
 		add(cbCidade);
 		
 		bairro = new JTextField();
 		bairro.setText(bairroBd);
 		bairro.setColumns(10);
-		bairro.setBounds(193, 176, 112, 20);
+		bairro.setBounds(110, 176, 214, 20);
 		add(bairro);
 		
 		JLabel lblNewLabel = new JLabel("Bairro:");
-		lblNewLabel.setBounds(148, 179, 43, 14);
+		lblNewLabel.setBounds(55, 176, 43, 14);
 		add(lblNewLabel);
 		
 		JLabel lblRua = new JLabel("Rua:");
-		lblRua.setBounds(161, 210, 32, 14);
+		lblRua.setBounds(68, 207, 32, 14);
 		add(lblRua);
 		
 		rua = new JTextField();
 		rua.setText(ruaBd);
 		rua.setColumns(10);
-		rua.setBounds(193, 207, 112, 20);
+		rua.setBounds(110, 207, 214, 20);
 		add(rua);
 		
 		JLabel lblNewLabel_6 = new JLabel("CEP:");
-		lblNewLabel_6.setBounds(160, 239, 33, 14);
+		lblNewLabel_6.setBounds(67, 236, 33, 14);
 		add(lblNewLabel_6);
 		
 		cep = new JTextField();
 		cep.setText(cepBd);
 		cep.setColumns(10);
-		cep.setBounds(193, 236, 112, 20);
+		cep.setBounds(110, 236, 214, 20);
 		add(cep);
 		
 		JButton btnSalvar = new JButton("Salvar");
@@ -193,7 +193,7 @@ public class AlterarFornecedor extends JPanel {
 			}
 		});
 		btnSalvar.setBackground(new Color(0, 128, 0));
-		btnSalvar.setBounds(325, 128, 89, 23);
+		btnSalvar.setBounds(357, 196, 89, 23);
 		add(btnSalvar);
 		
 		JButton btnNewButton_1 = new JButton("");
@@ -204,7 +204,7 @@ public class AlterarFornecedor extends JPanel {
 			}
 		});
 		btnNewButton_1.setIcon(new ImageIcon(AlterarFornecedor.class.getResource("/Imagens/Voltar.png")));
-		btnNewButton_1.setBounds(27, 235, 87, 23);
+		btnNewButton_1.setBounds(359, 233, 87, 23);
 		add(btnNewButton_1);
 		
 		JLabel planoFundo = new JLabel("");

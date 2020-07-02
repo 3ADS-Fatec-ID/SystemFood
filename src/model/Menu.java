@@ -48,7 +48,7 @@ public class Menu extends JFrame {
 	 * Create the frame.
 	 */
 	public Menu() {
-		setTitle("Menu");
+		setTitle("SystemFood");
 		bd = new BD();
 //		bd.getConnection();
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

@@ -29,8 +29,9 @@ public class AnotarPedido extends JPanel {
 	private static BD bd;
 	public String[] lanches;
 	private String nomeCliente, bairro, rua, complemento;
-	private String nomeBebida, nomeComida;
+//	private String nomeBebida, nomeComida;
 	private int qtdLanche, qtdBebida, idComida, idBebida;
+	private Double precoLanche, precoBebida;
 	
 	/**
 	 * Create the panel.
@@ -50,7 +51,7 @@ public class AnotarPedido extends JPanel {
 			bd.st = bd.con.prepareStatement(sql); //preparei a query para a execução
 			bd.rs = bd.st.executeQuery();
 			while(bd.rs.next()) {
-			 lanches[i] = bd.rs.getString("nomeComida");
+			 lanches[i] = Integer.toString(bd.rs.getInt("idComida"))+" "+bd.rs.getString("nomeComida")+" "+bd.rs.getString("preco");
 			 i++;
 			}
 			i = 0; 
@@ -67,7 +68,7 @@ public class AnotarPedido extends JPanel {
 			bd.st = bd.con.prepareStatement(sqlBebidas); //preparei a query para a execução
 			bd.rs = bd.st.executeQuery();
 			while(bd.rs.next()) {
-				bebidas[i] = bd.rs.getString("descricao");
+				bebidas[i] = Integer.toString(bd.rs.getInt("idProduto"))+" "+bd.rs.getString("descricao")+" "+bd.rs.getString("valorVenda");
 				i++;
 			}
 			
@@ -120,19 +121,21 @@ public class AnotarPedido extends JPanel {
 						int a=1;
 						try {
 						a = Integer.parseInt(JOptionPane.showInputDialog("Digite a quantidade !"));
+						qtdLanche = a;
 						if(a<=0)
 						{
 							a=1;
 						}
 						String b= Integer.toString(a)+" "+data.toString();
-						System.out.println(idComida);
+//						System.out.println(idComida);
+						
 						pedidoLanches.add(Integer.toString(codPedido));
 						pedidoLanches.add("null");
-						pedidoLanches.add(Integer.toString(idComida));
-						pedidoLanches.add(Integer.toString(a));
+//						pedidoLanches.add(Integer.toString(idComida));
+//						pedidoLanches.add(Integer.toString(a));
 		                listLanchesAnot.addElement(b);
-	//	                listaComidas.addElementdata.toString();
-	//	                model_list.removeElement(data);
+//	                listaComidas.addElementdata.toString();
+//	                model_list.removeElement(data);
 						}
 						catch(NumberFormatException erro)
 						{
@@ -203,6 +206,7 @@ public class AnotarPedido extends JPanel {
 					int a=1;
 					try {
 					a = Integer.parseInt(JOptionPane.showInputDialog("Digite a quantidade !"));
+					qtdBebida = a;
 					if(a<=0)
 					{
 						a=1;
@@ -327,22 +331,76 @@ public class AnotarPedido extends JPanel {
 		btnSalvar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				bd = new BD();
-				
+				bd.getConnection();
 				nomeCliente = tfnomeCliente.getText();
 				bairro = tfBairro.getText();
 				rua = tfRua.getText();
 				complemento = tfComp.getText();
 				System.out.println(nomeCliente+", "+bairro+", "+rua+", "+complemento+"\n");
 				
-				System.out.println(listLanchesAnot);
-				int n = pedidoLanches.size();
-				int i;
+				String sqlTeste = "INSERT INTO pedidos (idPedido, nomeCliente, valorPedido, rua, bairro, complemento, taxaEntrega)"
+						+ " VALUES (?, ?, ?, ?, ?, ?, ?);";
+				try {
+					bd.st = bd.con.prepareStatement(sqlTeste); //preparei a query para a execução
+					bd.st.setInt(1, codPedido);
+					bd.st.setString(2, nomeCliente);
+					bd.st.setDouble(3, 50.50);
+					bd.st.setString(4, rua);
+					bd.st.setString(5, bairro);
+					bd.st.setString(6, complemento);
+					bd.st.setDouble(7, 5.50);
+					bd.st.executeUpdate();
+				} catch( SQLException error ) {
+					System.out.println("ERRO => " + error);
+					JOptionPane.showMessageDialog(null, "Erro ao cadastrar.\nInsira dados validos!", "ERRO", JOptionPane.ERROR_MESSAGE);
+				}
 				
-//			    for (i=0; i<n; i++) {
-//			      System.out.println(codPedido+" - "+pedidoLanches.get(i)+"\n");
-//			    }
-			    System.out.println(pedidoLanches);
-				System.out.println(listBebidasAnot);
+				int n = listLanchesAnot.getSize();
+                int i=0;
+                for (i=0; i<n; i++) {
+	                String item = (String) listLanchesAnot.getElementAt(i);
+	                String [] Dados= item.split(" ");
+//	                System.out.println(Dados[0]);
+//	                System.out.println(Dados[1]);
+//	                System.out.println(Dados[2]);
+	                System.out.println(Dados[3]);
+	                String sql = "INSERT INTO itensPedido (idPedido, idComida, quantidade) VALUES (?, ?, ?);";
+	                try {
+						bd.st = bd.con.prepareStatement(sql); //preparei a query para a execução
+						bd.st.setInt(1, codPedido);
+						bd.st.setInt(2, Integer.parseInt(Dados[1]));
+						bd.st.setInt(3, Integer.parseInt(Dados[0]));
+						bd.st.executeUpdate();
+						JOptionPane.showMessageDialog(null, "Usuário cadastrado com sucesso");
+					} catch( SQLException error ) {
+						System.out.println("ERRO => " + error);
+						JOptionPane.showMessageDialog(null, "Erro ao cadastrar.\nInsira dados validos!", "ERRO", JOptionPane.ERROR_MESSAGE);
+					}
+	             }
+                for (i=0; i<n; i++) {
+	                String item = (String) listBebidasAnot.getElementAt(i);
+	                String [] Dados= item.split(" ");
+//	                System.out.println(Dados[0]);
+//	                System.out.println(Dados[1]);
+//	                System.out.println(Dados[2]);
+	                System.out.println(Dados[3]);
+	                String sql = "INSERT INTO itensPedido (idPedido, idProduto, quantidade) VALUES (?, ?, ?);";
+	                try {
+						bd.st = bd.con.prepareStatement(sql); //preparei a query para a execução
+						bd.st.setInt(1, codPedido);
+						bd.st.setInt(2, Integer.parseInt(Dados[1]));
+						bd.st.setInt(3, Integer.parseInt(Dados[0]));
+						bd.st.executeUpdate();
+						JOptionPane.showMessageDialog(null, "Usuário cadastrado com sucesso");
+					} catch( SQLException error ) {
+						System.out.println("ERRO => " + error);
+						JOptionPane.showMessageDialog(null, "Erro ao cadastrar.\nInsira dados validos!", "ERRO", JOptionPane.ERROR_MESSAGE);
+					}
+	             }
+                
+                
+                
+                System.out.println(listLanchesAnot);
 			}
 		});
 		btnSalvar.setBounds(601, 244, 88, 33);
