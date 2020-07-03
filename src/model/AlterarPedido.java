@@ -49,6 +49,8 @@ public class AlterarPedido extends JPanel {
 		String[] bebidas = new String[] {"", "", "", "", ""};
 		String[] lanchesPed = new String[] {"", "", "", ""};
 		String[] bebidasPed = new String[] {"", "", "", "", ""};
+		String[] lanchesId = new String[] {"", "", "", ""};
+		String[] bebidasId = new String[] {"", "", "", "", ""};
 		
 		String sqlCliente = "SELECT * FROM pedidos WHERE idPedido = " + idPedido;
 		
@@ -61,13 +63,13 @@ public class AlterarPedido extends JPanel {
 			ruaBd =  bd.rs.getString("rua");
 			complementoBd =  bd.rs.getString("complemento");
 		} catch( SQLException error ) {
-			System.out.println("ERRO => " + error);
+			System.out.println("ERRO 1 => " + error);
 		}
 		setLayout(null);
 		
 //		String sql = "SELECT  nomeCliente, CONCAT(rua,', ', bairro)  AS 'endereco'  FROM pedidos WHERE idPedido = " + idPedido;
 //		
-//		try {
+//		try {a
 //			bd.st = bd.con.prepareStatement(sql); //preparei a query para a execução
 //			bd.rs = bd.st.executeQuery();
 //			bd.rs.next();
@@ -88,7 +90,7 @@ public class AlterarPedido extends JPanel {
 			}
 			i = 0; 
 		} catch (SQLException erro) {
-     	   System.out.println("ERRO => " + erro);
+     	   System.out.println("ERRO 2 => " + erro);
      	   JOptionPane.showMessageDialog(null, "Erro ao alterar.\nInsira dados validos!", "ERRO", JOptionPane.ERROR_MESSAGE);
         }  catch ( NullPointerException erro ) {
 				System.out.println("ERRO => " + erro.getCause().toString());
@@ -105,7 +107,7 @@ public class AlterarPedido extends JPanel {
 			}
 			i = 0;
 		} catch (SQLException erro) {
-     	   System.out.println("ERRO => " + erro);
+     	   System.out.println("ERRO 3 => " + erro);
      	   JOptionPane.showMessageDialog(null, "Erro ao alterar.\nInsira dados validos!", "ERRO", JOptionPane.ERROR_MESSAGE);
         }  catch ( NullPointerException erro ) {
 				System.out.println("ERRO => " + erro.getCause().toString());
@@ -116,9 +118,10 @@ public class AlterarPedido extends JPanel {
 				"	t2.nomeComida\r\n" + 
 				"FROM itenspedido AS t1\r\n" + 
 				"LEFT JOIN comidas AS t2 ON t1.idComida = t2.idComida\r\n" + 
-				"WHERE t1.idPedido = 1 AND t2.idComida IS NOT NULL;"; 
+				"WHERE t1.idPedido = ? AND t2.idComida IS NOT NULL;"; 
 		try {
 			bd.st = bd.con.prepareStatement(sqlLanchesPed); //preparei a query para a execu��o
+			bd.st.setInt(1, idPedido);
 			bd.rs = bd.st.executeQuery();
 			while(bd.rs.next()) {
 				lanchesPed[i] = Integer.toString(bd.rs.getInt("quantidade"))+" "+bd.rs.getString("nomeComida");
@@ -126,7 +129,7 @@ public class AlterarPedido extends JPanel {
 			}
 			i = 0; 
 		} catch (SQLException erro1) {
-     	   System.out.println("ERRO => " + erro1);
+     	   System.out.println("ERRO 4 => " + erro1);
      	   JOptionPane.showMessageDialog(null, "Erro ao alterar.\nInsira dados validos!", "ERRO", JOptionPane.ERROR_MESSAGE);
         }  catch ( NullPointerException erro ) {
         	System.out.println("ERRO => " + erro.getCause().toString());
@@ -137,9 +140,10 @@ public class AlterarPedido extends JPanel {
 				"    t2.descricao\r\n" + 
 				"FROM itenspedido AS t1\r\n" + 
 				"LEFT JOIN produtos AS t2 ON t1.idProduto = t2.idProduto\r\n" + 
-				"WHERE t1.idPedido = 1 AND t2.descricao IS NOT NULL;"; 
+				"WHERE t1.idPedido = ? AND t2.descricao IS NOT NULL;"; 
 		try {
 			bd.st = bd.con.prepareStatement(sqlBebidasPed); //preparei a query para a execu��o
+			bd.st.setInt(1, idPedido);
 			bd.rs = bd.st.executeQuery();
 			while(bd.rs.next()) {
 				bebidasPed[i] = Integer.toString(bd.rs.getInt("quantidade"))+" "+bd.rs.getString("descricao");
@@ -147,11 +151,45 @@ public class AlterarPedido extends JPanel {
 			}
 			i = 0; 
 		} catch (SQLException erro1) {
-     	   System.out.println("ERRO => " + erro1);
+     	   System.out.println("ERRO 5 => " + erro1);
      	   JOptionPane.showMessageDialog(null, "Erro ao alterar.\nInsira dados validos!", "ERRO", JOptionPane.ERROR_MESSAGE);
         }  catch ( NullPointerException erro ) {
         	System.out.println("ERRO => " + erro.getCause().toString());
         }	
+		
+		String sqlIdLanches = "SELECT * FROM itensPedido WHERE idPedido = ?;"; 
+		try {
+			bd.st = bd.con.prepareStatement(sqlIdLanches); //preparei a query para a execu��o
+			bd.st.setInt(1, idPedido);
+			bd.rs = bd.st.executeQuery();
+			while(bd.rs.next()) {
+				lanchesId[i] = Integer.toString(bd.rs.getInt("idComida"))+" "+bd.rs.getString("quantidade");
+				i++;
+			}
+			i = 0; 
+		} catch (SQLException erro1) {
+     	   System.out.println("ERRO 6 => " + erro1);
+     	   JOptionPane.showMessageDialog(null, "Erro ao alterar.\nInsira dados validos!", "ERRO", JOptionPane.ERROR_MESSAGE);
+        }  catch ( NullPointerException erro ) {
+        	System.out.println("ERRO => " + erro.getCause().toString());
+        }	
+		
+		String sqlIdBebidas = "SELECT * FROM itensPedido WHERE idPedido = ?"; 
+		try {
+			bd.st = bd.con.prepareStatement(sqlIdBebidas); //preparei a query para a execu��o
+			bd.st.setInt(1, idPedido);
+			bd.rs = bd.st.executeQuery();
+			while(bd.rs.next()) {
+				bebidasId[i] = Integer.toString(bd.rs.getInt("idProduto"))+" "+bd.rs.getString("quantidade");
+				i++;
+			}
+			i = 0; 
+		} catch (SQLException erro1) {
+     	   System.out.println("ERRO 7 => " + erro1);
+     	   JOptionPane.showMessageDialog(null, "Erro ao alterar.\nInsira dados validos!", "ERRO", JOptionPane.ERROR_MESSAGE);
+        }  catch ( NullPointerException erro ) {
+        	System.out.println("ERRO => " + erro.getCause().toString());
+        }
 		
 		
 //		String[] bebidas = new String[] {"Coca-Cola","Fanta Laranja","Fanta Uva","Sprite","Itubaina"};
@@ -159,8 +197,8 @@ public class AlterarPedido extends JPanel {
 	    DefaultListModel<Object> listLanchesAnot = new DefaultListModel<Object>();
 	    DefaultListModel<Object> model_list_2 = new DefaultListModel<Object>();
 	    DefaultListModel<Object> listBebidasAnot = new DefaultListModel<Object>();
-	    ArrayList<String> pedidoLanches = new ArrayList();
-		ArrayList<String> pedidoBebidas = new ArrayList();
+	    DefaultListModel<Object> pedidoLanches = new DefaultListModel<Object>();
+	    DefaultListModel<Object> pedidoBebidas = new DefaultListModel<Object>();
 	    for (String value : lanches) {
 	        model_list.addElement(value);
 	    }
@@ -172,6 +210,12 @@ public class AlterarPedido extends JPanel {
 	    }
 	    for(String value : bebidasPed) {
 	    	listBebidasAnot.addElement(value);
+	    }
+	    for (String value : lanchesId) {
+	    	pedidoLanches.addElement(value);
+	    }
+	    for(String value : bebidasId) {
+	    	pedidoBebidas.addElement(value);
 	    }
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setBounds(29, 76, 142, 155);
@@ -206,12 +250,6 @@ public class AlterarPedido extends JPanel {
 							a=1;
 						}
 						String b= Integer.toString(a)+" "+data.toString();
-//						System.out.println(idComida);
-						
-						pedidoLanches.add(Integer.toString(codPedido));
-						pedidoLanches.add("null");
-//						pedidoLanches.add(Integer.toString(idComida));
-//						pedidoLanches.add(Integer.toString(a));
 		                listLanchesAnot.addElement(b);
 //	                listaComidas.addElementdata.toString();
 //	                model_list.removeElement(data);
@@ -438,20 +476,47 @@ public class AlterarPedido extends JPanel {
 					bd.st.setInt(7, idPedido);
 					bd.st.executeUpdate();
 				} catch( SQLException error ) {
-					System.out.println("ERRO 1=> " + error);
+					System.out.println("ERRO 8=> " + error);
 					JOptionPane.showMessageDialog(null, "Erro ao cadastrar.\nInsira dados validos!", "ERRO", JOptionPane.ERROR_MESSAGE);
 				}
 				
 				int n = listLanchesAnot.getSize();
                 int i=0;
                 for (i=0; i<n; i++) {
-	                String item = (String) listLanchesAnot.getElementAt(i);
+	                String item = (String) pedidoLanches.getElementAt(i);
 	                String [] Dados= item.split(" ");
-	                System.out.println(Dados[0]);
-	                System.out.println(Dados[1]);
-	                System.out.println(Dados[2]);
-	                String sql = "UPDATE itensPedido SET idComida = ?, quantidade = ?"
-	                		+ "WHERE idPedido = ?";
+//	                System.out.println("COMIDA: " + Dados[i]);
+//	                System.out.println("COMIDA 1: " + Dados[0]);
+//	                System.out.println("COMIDA 2: " + Dados[1]);
+//	                String sql = "UPDATE itensPedido SET idComida = ?, quantidade = ?"
+//	                		+ "WHERE idPedido = ?";
+	                String sql = "UPDATE itensPedido SET idComida = "+Integer.parseInt(Dados[0])+", quantidade = "+Integer.parseInt(Dados[1])+ ""
+	                		+ " WHERE idPedido = "+idPedido;
+	                System.out.println("COMIDA => "+sql);
+	                try {
+						bd.st = bd.con.prepareStatement(sql); //preparei a query para a execução
+						
+//						bd.st.setInt(1, Integer.parseInt(Dados[0]));
+//						bd.st.setInt(2, Integer.parseInt(Dados[1]));
+//						bd.st.setInt(3, idPedido);
+						bd.st.executeUpdate();
+						JOptionPane.showMessageDialog(null, "Usuário cadastrado com sucesso");
+					} catch( SQLException error ) {
+						System.out.println("ERRO 9=> " + error);
+						JOptionPane.showMessageDialog(null, "Erro ao cadastrar.\nInsira dados validos!", "ERRO", JOptionPane.ERROR_MESSAGE);
+					}
+	             }
+                for (i=0; i<n; i++) {
+	                String item = (String) pedidoBebidas.getElementAt(i);
+	                String [] Dados= item.split(" ");
+//	                System.out.println("BEBIDA: " + Dados[i]);
+//	                System.out.println("BEBIDA 1: " + Dados[0]);
+//	                System.out.println("BEBIDA 2: " + Dados[1]);
+//	                String sql = "UPDATE itensPedido SET idProduto = ?, quantidade = ?"
+//	                		+ "WHERE idPedido = ?";
+	                String sql = "UPDATE itensPedido SET idProduto = "+Integer.parseInt(Dados[0])+", quantidade = "+Integer.parseInt(Dados[1])+ ""
+	                		+ " WHERE idPedido = "+idPedido;
+	                System.out.println("BEBIDA => "+sql);
 	                try {
 						bd.st = bd.con.prepareStatement(sql); //preparei a query para a execução
 						
@@ -461,28 +526,7 @@ public class AlterarPedido extends JPanel {
 						bd.st.executeUpdate();
 						JOptionPane.showMessageDialog(null, "Usuário cadastrado com sucesso");
 					} catch( SQLException error ) {
-						System.out.println("ERRO 2=> " + error);
-						JOptionPane.showMessageDialog(null, "Erro ao cadastrar.\nInsira dados validos!", "ERRO", JOptionPane.ERROR_MESSAGE);
-					}
-	             }
-                for (i=0; i<n; i++) {
-	                String item = (String) listBebidasAnot.getElementAt(i);
-	                String [] Dados= item.split(" ");
-	                System.out.println(Dados[0]);
-	                System.out.println(Dados[1]);
-	                System.out.println(Dados[2]);
-	                String sql = "UPDATE itensPedido SET idProduto = ?, quantidade = ?"
-	                		+ "WHERE idPedido = ?";
-	                try {
-						bd.st = bd.con.prepareStatement(sql); //preparei a query para a execução
-						
-						bd.st.setInt(1, Integer.parseInt(Dados[1]));
-						bd.st.setInt(2, Integer.parseInt(Dados[0]));
-						bd.st.setInt(3, idPedido);
-						bd.st.executeUpdate();
-						JOptionPane.showMessageDialog(null, "Usuário cadastrado com sucesso");
-					} catch( SQLException error ) {
-						System.out.println("ERRO 3=> " + error);
+						System.out.println("ERRO 10=> " + error);
 						JOptionPane.showMessageDialog(null, "Erro ao cadastrar.\nInsira dados validos!", "ERRO", JOptionPane.ERROR_MESSAGE);
 					}
 	             }

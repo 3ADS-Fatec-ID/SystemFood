@@ -51,9 +51,10 @@ public class ChecarPedido extends JPanel {
 				"	t2.nomeComida\r\n" + 
 				"FROM itenspedido AS t1\r\n" + 
 				"LEFT JOIN comidas AS t2 ON t1.idComida = t2.idComida\r\n" + 
-				"WHERE t1.idPedido = 1 AND t2.idComida IS NOT NULL;"; 
+				"WHERE t1.idPedido = ? AND t2.idComida IS NOT NULL;"; 
 		try {
 			bd.st = bd.con.prepareStatement(sqlLanches); //preparei a query para a execu��o
+			bd.st.setInt(1, idPedido);
 			bd.rs = bd.st.executeQuery();
 			while(bd.rs.next()) {
 				lanches[i] = Integer.toString(bd.rs.getInt("quantidade"))+" "+bd.rs.getString("nomeComida");
@@ -72,9 +73,10 @@ public class ChecarPedido extends JPanel {
 				"    t2.descricao\r\n" + 
 				"FROM itenspedido AS t1\r\n" + 
 				"LEFT JOIN produtos AS t2 ON t1.idProduto = t2.idProduto\r\n" + 
-				"WHERE t1.idPedido = 1 AND t2.descricao IS NOT NULL;"; 
+				"WHERE t1.idPedido = ? AND t2.descricao IS NOT NULL;"; 
 		try {
 			bd.st = bd.con.prepareStatement(sqlBebidas); //preparei a query para a execu��o
+			bd.st.setInt(1, idPedido);
 			bd.rs = bd.st.executeQuery();
 			while(bd.rs.next()) {
 				bebidas[i] = Integer.toString(bd.rs.getInt("quantidade"))+" "+bd.rs.getString("descricao");
@@ -192,7 +194,7 @@ public class ChecarPedido extends JPanel {
 		btnNewButton_2.setBackground(new Color(178, 34, 34));
 		btnNewButton_2.setBounds(587, 130, 132, 23);
 		add(btnNewButton_2);
-		System.out.println(list.getModel().getSize());
+//		System.out.println(list.getModel().getSize());
 
 	}
 }
